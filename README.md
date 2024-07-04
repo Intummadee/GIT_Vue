@@ -150,6 +150,13 @@ methods:{
 <button @click.ctrl="increment">Click Ctrl together with left mouse click.</button>
 ```
 
+
+- use style scope , If u don't want to use style together in every component. maybe u use style together(not use scope) in App.vue
+```JS
+<style scoped></style>
+```
+
+
 </details>
 
 <details>
@@ -171,6 +178,67 @@ export default {
 </script> 
 ```
 
+- tranfer data 
+```JS
+Parent : <Person animal="cat" />
+Children :
+<script>
+    export default {
+        name: "Person",
+        data(){ return { }},
+        props:["animal"] // Can be used in template as this --> <h1> {{ animal }} </h1>
+    }
+</script>
+```
+
+- Dynamic props
+```JS
+Parent : 
+<ListData :employees="employeesWantToTranfer" />  // want to tranfer data but it must write "", so there must be bind (:) in front of the props
+<script>
+    export default {
+        name: "Person",
+        data(){ return {
+            employeesWantToTranfer:[
+                {name:"name", salaray:2000}
+            ]
+        }},
+    }
+</script>
+// => in ListData
+<template>
+    <Person 
+        v-for="(item, index) in employees"
+        :key="index"
+        :name="item.name"
+        :salary="item.salary"
+    />
+</template>
+props:["employees"] 
+```
+
+
+- Props validation
+<script>
+    export default {
+        name: "Person",
+        data(){ return { }},
+        props:{
+            name:{
+                type:String,
+                required:true,
+            },
+            salary:{
+                type:Number,
+                default:0 // If there is no salary , set the default value as zero
+            }
+        } 
+    }
+</script>
+
+
+
+
 
 </details>
 
@@ -181,3 +249,5 @@ export default {
 ## Extensions in VSCode
 - vetur
 - ESLint
+- Vue VSCode Snippets
+- Tailwind CSS IntelliSense
