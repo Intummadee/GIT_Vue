@@ -1,4 +1,4 @@
-# Ohmmm-Amulet-Shop
+# GIT_Vue
  
 
 
@@ -8,6 +8,7 @@
 
 ## สร้างโปรเจ็กต์ Vue.js ด้วย Vue CLI
 ```npm install -g @vue/cli``` : ติดตั้ง Vue CLI
+
 ```vue create my-vue-project``` : สร้างโปรเจ็กต์ Vue
 
 - check version
@@ -38,9 +39,10 @@ data(){
     }}
 ```
 
-- Array , Object , v-if , v-show , computed , watchers
+- V-if , V-show , Computed , Watchers
 ```JS
 <p> {{ animals[0] }} and {{ general.gender }} </p>
+// V-if
 <p v-if="animals.length === 0">There are no animals at all.</p>
 <div v-else>
     {/* Array */}
@@ -52,7 +54,9 @@ data(){
         <li v-for="(item, key) in general" :key="key"> {{ key }} - {{ item }} </li>
     </ul>
 
+    {/* Onclick */}
     <button @click="toggleVisible">{{ isVisible ? "hide" : "show" }} detail</button>
+    {/* V-show */}
     <p v-show="isVisible">Detail 🧐</p>
 </div>
 
@@ -122,7 +126,7 @@ export default {
 ```
 
 
-- Form & Ref & Input
+- Form & Ref 
 ```JS
 <form @submit="submitForm">
     <label>ป้อนชื่อเล่น : </label>
@@ -151,10 +155,28 @@ methods:{
 ```
 
 
-- use style scope , If u don't want to use style together in every component. maybe u use style together(not use scope) in App.vue
+- Style scope : If u don't want to use style together in every component. maybe u use style together(not use scope) in App.vue
 ```JS
 <style scoped></style>
 ```
+
+- Transition : https://vuejs.org/guide/built-ins/transition
+```JS
+<transition name="fade" >
+</transition>
+<style>
+    .fade-enter-from{
+        opacity:0;
+    }
+    .fade-enter-active{
+        transition: all 0.5s linear;
+    }
+</style>
+
+```
+
+
+
 
 
 </details>
@@ -219,6 +241,7 @@ props:["employees"]
 
 
 - Props validation
+```JS
 <script>
     export default {
         name: "Person",
@@ -235,9 +258,33 @@ props:["employees"]
         } 
     }
 </script>
+```
 
+- Custom Event : Send information from Children to Parent. Children can't talk each other so it must to send event to Parent
+```JS
+<button @click="showDescription(id)">see Detail</button>
+methods:{
+    showDescription(id){
+        this.$emit("show", id); // send event name show to Parent , cuz u can name the event therefore being called Custom event 
+    }
+}
 
+Parent :
+<Person @show="doSomething" />
+methods:{
+    doSomething(id){
+        console.log("Child ID : ", id);
+    }
+}
 
+```
+
+- Slot : Different content will be in slot but image in Card will be same
+<img src="./img_Git/image1.png"  />
+<img src="./img_Git/image2.png"  />
+<img src="./img_Git/image3.png"  />
+- use card cover content That will change each data
+<img src="./img_Git/image4.png"  />
 
 
 </details>
