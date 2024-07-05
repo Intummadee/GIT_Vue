@@ -280,11 +280,41 @@ methods:{
 ```
 
 - Slot : Different content will be in slot but image in Card will be same
-<img src="./img_Git/image1.png"  />
-<img src="./img_Git/image2.png"  />
-<img src="./img_Git/image3.png"  />
-- use card cover content That will change each data
-<img src="./img_Git/image4.png"  />
+<img src="./img_Git/image1.png" height="150" />
+<div align="center">
+    <img src="./img_Git/image2.png" height="150" width="45%" />
+    <img src="./img_Git/image3.png" height="150" width="45%" />
+</div>
+1.) use card cover content That will change each data
+<img src="./img_Git/image4.png" height="150" />
+
+2.) slot name
+<div align="center">
+    <img src="./img_Git/image5.png" height="150" width="45%" />
+    <img src="./img_Git/image6.png" height="150" width="45%" />
+</div>
+
+- V-Model Form
+```JS
+<form>
+    <div class="form-control">
+        <label for="emp-name"> name </label>
+        <input type="text" v-model.trim="employee.name" />
+        {/* v-model.trim = Its function is to cut out whitespace that is in front and behind the values ​​entered into the input field. */}
+    </div>
+    {{JSON.stringify(employee)}}  {/* this line is for debugging to view employee in data */}
+</form>
+
+data(){
+    return{
+        employee:{
+            name:"cat",
+        }
+    }
+}
+
+```
+
 
 
 </details>
