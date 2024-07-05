@@ -1,35 +1,20 @@
 <template>
-  <section>
-    <h1>Hello world</h1>
-    <h1>{{ firstname }}</h1>
-    <h1>{{ getFullname() }}</h1>
+  <div class="flex flex-col min-h-screen font-Roboto bg-weather-primary">
+  
+    <SiteNavigation />
+    <RouterView />
 
-
-
-    <ListData />
-
-  </section>
+  </div>
 </template>
 
 
 
 
 
-<script>  
-import ListData from "./componenst/HelloWorld.vue";
+<script setup>
+import { RouterView } from "vue-router";
+import SiteNavigation from "./componenst/SiteNavigation.vue";
 
 
-export default {
-  name: 'App',
-  components:{
-    ListData // import component
-  }
-  
-}
 </script>
 
-
-
-
-
-<style></style>

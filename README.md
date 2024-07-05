@@ -6,13 +6,50 @@
 
 
 
-## สร้างโปรเจ็กต์ Vue.js ด้วย Vue CLI
-```npm install -g @vue/cli``` : ติดตั้ง Vue CLI
+## Set up Vue + Tailwind
 
-```vue create my-vue-project``` : สร้างโปรเจ็กต์ Vue
+```npm install -g @vue/cli``` : install Vue CLI
+
+```vue create my-vue-project``` : create Vue project
+
+```npm install vue-router@4``` : install Vue Router
 
 - check version
 ```vue --version``` => @vue/cli 5.0.8
+
+- Install Tailwind CSS
+```
+cd my-vue-project
+npm install -D tailwindcss postcss autoprefixer
+```
+
+- Initialize Tailwind CSS
+```npx tailwindcss init -p```
+
+- Configure Tailwind , in the tailwind.config.js file
+```
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+- Include Tailwind in Your CSS , Create a CSS file name "tailwind.css" in src/assets/tailwind.css
+```
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+- In your main.js file, import the Tailwind CSS file you just created:
+```import './assets/tailwind.css'```
 
 ## How to run FrontEnd
 ```
@@ -176,10 +213,11 @@ methods:{
 ```
 
 
-
-
-
 </details>
+
+
+
+
 
 <details>
 <summary><h2>Component</h2></summary>
@@ -328,3 +366,10 @@ data(){
 - ESLint
 - Vue VSCode Snippets
 - Tailwind CSS IntelliSense
+
+
+## Ref
+
+- https://cdnjs.com/libraries/font-awesome
+- 
+
