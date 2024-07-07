@@ -19,7 +19,7 @@
 
 - Install Tailwind CSS
 ```
-cd my-vue-project
+cd vue_weather
 npm install -D tailwindcss postcss autoprefixer
 ```
 
@@ -62,12 +62,18 @@ npm install uuid
 
 ## How to run FrontEnd
 ```
-cd .\my-vue-project\
+cd .\vue_weather\
 npm run serve
 ```
 
+## Tech Stack :
+- bootstrap , tailwind , Vue
+
+
+
 - trick create component
 ```<>```
+
 
 
 <details>
@@ -86,6 +92,8 @@ data(){
 ```
 
 - V-if , V-show , Computed , Watchers
+v-if: Create or completely remove elements from the DOM.
+v-show: Just hide or show elements using CSS (display: none)
 ```JS
 <p> {{ animals[0] }} and {{ general.gender }} </p>
 // V-if
@@ -204,6 +212,7 @@ methods:{
 - Style scope : If u don't want to use style together in every component. maybe u use style together(not use scope) in App.vue
 ```JS
 <style scoped></style>
+<img src="./img_Git/image7.png" height="150" width="45%" />
 ```
 
 - Transition : https://vuejs.org/guide/built-ins/transition
