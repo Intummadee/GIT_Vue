@@ -51,6 +51,15 @@ module.exports = {
 - In your main.js file, import the Tailwind CSS file you just created:
 ```import './assets/tailwind.css'```
 
+
+## Dependency
+```
+npm install uuid
+
+```
+
+
+
 ## How to run FrontEnd
 ```
 cd .\my-vue-project\

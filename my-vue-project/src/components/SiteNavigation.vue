@@ -64,7 +64,7 @@
 
 <script>
 import { RouterLink, useRoute, useRouter } from "vue-router";
-import { uid } from "uid";
+import { v4 as uuidv4 } from 'uuid';
 import { ref } from "vue";
 import BaseModal from "./BaseModal.vue";
 
@@ -88,7 +88,7 @@ export default {
       }
 
       const locationObj = {
-        id: uid(),
+        id: uuidv4(),
         state: route.params.state,
         city: route.params.city,
         coords: {

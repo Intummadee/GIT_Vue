@@ -11,10 +11,15 @@
 
 
 
-<script setup>
+<script>
 import { RouterView } from "vue-router";
-import SiteNavigation from "./componenst/SiteNavigation.vue";
+import SiteNavigation from "./components/SiteNavigation.vue";
 
-
+export default {
+  components: {
+    RouterView,
+    SiteNavigation
+  }
+};
 </script>
 
