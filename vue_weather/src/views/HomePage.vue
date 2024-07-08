@@ -6,19 +6,21 @@
       
       
       <!-- left element -->
-      <div class="flex-col bg-fuchsia-900 w-[60%]">
+      <div class="flex-col  w-[60%]">
         <!-- <div v-if="weather"> -->
         <div >
-          <div class="flex flex-row justify-between">
-            <div class="w-[70%] flex flex-col justify-between bg-orange-300 h-[200px]">
-              <h1 class="text-white text-2xl bg-slate-800"> weather.name </h1>
-              <p class="items-end bg-black">Temperature: weather.main.temp °C</p>
+          <div class="flex flex-row justify-between ">
+            <div class="w-[70%] flex flex-col justify-between h-[200px] py-4">
+              <div>
+                <h1 class="text-white text-2xl "> weather.name </h1>
+                <h1 class="text-secondary "> Thailand </h1>
+              </div>
+              <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> weather.main.temp °C</h1>
             </div>
 
-            <div class="bg-lime-200 w-[30%] flex justify-center	 ">
-              <img class="w-20 h-25" src="https://cdn4.iconfinder.com/data/icons/the-weather-is-nice-today/64/weather_3-512.png" alt="icon-weather-now">
+            <div class=" w-[30%] flex justify-center	items-center ">
+              <img class="w-15 h-[150px]" src="https://cdn4.iconfinder.com/data/icons/the-weather-is-nice-today/64/weather_3-512.png" alt="icon-weather-now">
             </div>
-
           </div>
 
 
@@ -27,6 +29,12 @@
           
         </div>
       </div>
+      
+
+
+
+
+
       
       <!-- right element -->
       <div class="flex flex-col w-[40%]">
