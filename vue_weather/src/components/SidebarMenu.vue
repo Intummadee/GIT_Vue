@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <div class="flex flex-col" style="width:25%">
+  <div class="flex flex-col bg-second h-screen px-5">
       <!-- ใช้ v-for สำหรับการวนลูปในรายการ navLinks -->
-      <div v-for="list in navLinks" :key="list.id">
-        <h1>{{ list.title }}</h1>
+      <div v-for="list in navLinks" :key="list.id" class="pb-10">
+        <router-link to="/" class="text-secondary hover:text-white">{{ list.title }}</router-link>
       </div>
-    </div>
   </div>
 </template>
 
@@ -23,6 +21,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

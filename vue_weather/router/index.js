@@ -8,7 +8,7 @@ import HomePage from '../src/views/HomePage.vue'
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'HomePage',
     component: HomePage
   },
   // เพิ่ม routes อื่นๆ ตามต้องการ
