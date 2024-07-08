@@ -56,6 +56,8 @@ module.exports = {
 ```
 npm install uuid
 npm install axios
+npm install dotenv
+
 
 ```
 
@@ -404,5 +406,5 @@ data(){
 ## Ref
 
 - https://cdnjs.com/libraries/font-awesome
-- 
+- https://openweathermap.org/api/one-call-3#current (weather api)
 

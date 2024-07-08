@@ -18,9 +18,7 @@ export default {
   data() {
     return {
       weather: null,
-      apiKey: '6350e580276f65d9e82089330153e8a7',
-      lat:33.44,
-      lon:-94.04
+      apiKey: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
     }
   },
   methods: {
@@ -31,17 +29,23 @@ export default {
         alert("Geolocation is not supported by this browser.");
       }
     },
-    getWeather(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      console.log(lat , lon);
-      axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&appid=${this.apiKey}`)
-        .then(response => {
-          this.weather = response.data;
-        })
-        .catch(error => {
-          console.error("There was an error getting the weather data!", error);
-        });
+    async getWeather(position) {
+      // async มันสามารถหยุดรอการทำงานในบางจุดโดยไม่ขัดขวางการทำงานของโค้ดส่วนอื่น
+      // ฟังก์ชัน async จะคืนค่าเป็น Promise โดยอัตโนมัติ ซึ่งสามารถใช้ .then() หรือ await เพื่อรับค่าที่ส่งกลับมา
+      try {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        console.log(lat , lon);
+        // ใช้ await เพื่อรอการตอบสนองจาก axios.get()
+        // ภายในฟังก์ชัน async คุณสามารถใช้คีย์เวิร์ด await เพื่อรอผลลัพธ์จากการทำงานที่ใช้เวลานาน เช่น การเรียก API
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
+
+        // เมื่อการร้องขอสำเร็จ ให้เก็บข้อมูลใน weather
+        this.weather = response.data;
+      } catch (error) {
+        // จัดการข้อผิดพลาด
+        console.error("Error fetching weather data:", error.response ? error.response.data : error.message);
+      }
     },
     showError(error) {
       switch(error.code) {
