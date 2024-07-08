@@ -1,13 +1,46 @@
 <template>
-  <div class="text-secondary ">
-    <h1>Weather</h1>
-    <button @click="getLocation" class="bg-slate-100">Get Weather for Current Location</button>
-    <div v-if="weather">
-      <h2>{{ weather.name }}</h2>
-      <p>Temperature: {{ weather.main.temp }}°C</p>
-      <p>Humidity: {{ weather.main.humidity }}%</p>
-      <p>Wind Speed: {{ weather.wind.speed }} m/s</p>
+  <div class="text-secondary">
+    <!-- <h1>Weather</h1> -->
+    <div class="bg-orange-900  ">Search</div>
+    <div class="flex flex-row">
+      
+      
+      <!-- left element -->
+      <div class="flex-col bg-fuchsia-900 w-[60%]">
+        <!-- <div v-if="weather"> -->
+        <div >
+          <div class="flex flex-row justify-between">
+            <div class="w-[70%] flex flex-col justify-between bg-orange-300 h-[200px]">
+              <h1 class="text-white text-2xl bg-slate-800"> weather.name </h1>
+              <p class="items-end bg-black">Temperature: weather.main.temp °C</p>
+            </div>
+
+            <div class="bg-lime-200 w-[30%] flex justify-center	 ">
+              <img class="w-20 h-25" src="https://cdn4.iconfinder.com/data/icons/the-weather-is-nice-today/64/weather_3-512.png" alt="icon-weather-now">
+            </div>
+
+          </div>
+
+
+          <p>Humidity: weather.main.humidity %</p>
+          <p>Wind Speed:  weather.wind.speed  m/s</p>
+          
+        </div>
+      </div>
+      
+      <!-- right element -->
+      <div class="flex flex-col w-[40%]">
+        สรุปอากาศของทั้งสัปดาห์
+      </div>
+
+
+
+
     </div>
+
+
+
+
   </div>
 </template>
 
@@ -21,10 +54,14 @@ export default {
       apiKey: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
     }
   },
+  created() {
+    // this.getLocation();
+  },
   methods: {
     getLocation() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.getWeather, this.showError);
+        navigator.geolocation.getCurrentPosition(this.getWeather, this.showError);  // this.getWeather: ฟังก์ชัน callback ที่จะถูกเรียกเมื่อโลเคชั่นของผู้ใช้ถูกดึงมาเรียบร้อยแล้ว ฟังก์ชันนี้จะรับ parameter เป็น object position ที่มีพิกัด latitude และ longitude
+        this.getWeather();
       } else {
         alert("Geolocation is not supported by this browser.");
       }
@@ -41,6 +78,7 @@ export default {
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
 
         // เมื่อการร้องขอสำเร็จ ให้เก็บข้อมูลใน weather
+        console.log("data I received from weather api :", response.data);
         this.weather = response.data;
       } catch (error) {
         // จัดการข้อผิดพลาด
