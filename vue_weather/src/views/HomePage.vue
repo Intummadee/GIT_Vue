@@ -1,5 +1,5 @@
 <template>
-  <div class="text-secondary bg-sky-400">
+  <div class="text-secondary ">
     <h1>Weather</h1>
     <button @click="getLocation" class="bg-slate-100">Get Weather for Current Location</button>
     <div v-if="weather">

@@ -407,4 +407,5 @@ data(){
 
 - https://cdnjs.com/libraries/font-awesome
 - https://openweathermap.org/api/one-call-3#current (weather api)
-
+- https://home.openweathermap.org/
+- https://tailwindcss.com/
