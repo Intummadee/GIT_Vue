@@ -7,15 +7,15 @@
       
       <!-- left element -->
       <div class="flex-col  w-[60%]">
-        <!-- <div v-if="weather"> -->
-        <div >
+        <div v-if="weather">
+        <!-- <div > -->
           <div class="flex flex-row justify-between ">
             <div class="w-[70%] flex flex-col justify-between h-[200px] py-4">
               <div>
-                <h1 class="text-white text-2xl "> weather.name </h1>
+                <h1 class="text-white text-2xl "> {{weather.name}} </h1>
                 <h1 class="text-secondary "> Thailand </h1>
               </div>
-              <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> weather.main.temp °C</h1>
+              <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> {{weather.main.temp}} °C</h1>
             </div>
 
             <div class=" w-[30%] flex justify-center	items-center ">
@@ -24,8 +24,21 @@
           </div>
 
 
-          <p>Humidity: weather.main.humidity %</p>
-          <p>Wind Speed:  weather.wind.speed  m/s</p>
+
+          <div class="bg-second rounded-2xl p-4">
+            <div>Data</div>
+            <div class="grid grid-cols-2 mt-5">
+              <div class="flex" v-for="(weather) in dataOfWeather" :key="weather.title">
+                <img :src=weather.image alt="Humidity" class="w-[25px] h-[25px]">
+                <div class="ml-1 border-l-4 pl-2 border-first">
+                  <h2>{{weather.title}}:</h2>
+                  <h5 class="text-white font-bold text-lg">{{weather.data}} %</h5>
+                </div>
+              </div>
+              <p>Wind Speed:  weather.wind.speed  m/s</p>
+            </div>
+
+          </div>
           
         </div>
       </div>
@@ -35,7 +48,7 @@
 
 
 
-      
+
       <!-- right element -->
       <div class="flex flex-col w-[40%]">
         สรุปอากาศของทั้งสัปดาห์
@@ -60,10 +73,11 @@ export default {
     return {
       weather: null,
       apiKey: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+      dataOfWeather : [],
     }
   },
   created() {
-    // this.getLocation();
+    this.getLocation();
   },
   methods: {
     getLocation() {
@@ -87,7 +101,14 @@ export default {
 
         // เมื่อการร้องขอสำเร็จ ให้เก็บข้อมูลใน weather
         console.log("data I received from weather api :", response.data);
+        // ⁡⁢⁣⁢Set weather information⁡ 
         this.weather = response.data;
+        this.dataOfWeather.push(
+          {id:1, title:"humidity" , data: this.weather.main.humidity , image: require('@/assets/icon/humidity.png')}, 
+          {id:2, title:"wind speed" , data: this.weather.wind.speed , image: require('@/assets/icon/wind_speed.png')},
+        )
+        console.log("dataOfWeather : " ,this.dataOfWeather);
+
       } catch (error) {
         // จัดการข้อผิดพลาด
         console.error("Error fetching weather data:", error.response ? error.response.data : error.message);
