@@ -354,7 +354,7 @@ methods:{
 
 - Slot : Different content will be in slot but image in Card will be same
 <div align="center">
-    <img src="./img_Git/image1.png" height="200" width="50%"/>
+    <img src="./img_Git/image1.png" height="250" width="50%"/>
 </div>
 <div align="center">
     <img src="./img_Git/image2.png" height="150" width="35%" />
@@ -362,7 +362,7 @@ methods:{
 </div>
 1.) use card cover content That will change each data
 <div align="center">
-    <img src="./img_Git/image4.png" height="200" width="50%" />
+    <img src="./img_Git/image4.png" height="220" width="50%" />
 </div>
 
 2.) slot name
