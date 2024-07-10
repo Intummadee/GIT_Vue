@@ -13,7 +13,7 @@
             <div class="w-[70%] flex flex-col justify-between h-[200px] py-4">
               <div>
                 <h1 class="text-white text-2xl "> {{weather.name}} </h1>
-                <h1 class="text-secondary "> Thailand {{ weather.sys.country }}</h1>
+                <h1 class="text-secondary "> {{ timezone }}</h1>
               </div>
               <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> {{weather.main.temp}} °C</h1>
             </div>
@@ -73,6 +73,7 @@ export default {
       weather: null,
       apiKey: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
       dataOfWeather : [],
+      timezone: "",
     }
   },
   created() {
@@ -82,7 +83,7 @@ export default {
     getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.getWeather, this.showError);  // this.getWeather: ฟังก์ชัน callback ที่จะถูกเรียกเมื่อโลเคชั่นของผู้ใช้ถูกดึงมาเรียบร้อยแล้ว ฟังก์ชันนี้จะรับ parameter เป็น object position ที่มีพิกัด latitude และ longitude
-        
+
       } else {
         alert("Geolocation is not supported by this browser.");
       }
@@ -93,10 +94,18 @@ export default {
       try {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        console.log(lat , lon);
+        // console.log(lat , lon);
         // ใช้ await เพื่อรอการตอบสนองจาก axios.get()
         // ภายในฟังก์ชัน async คุณสามารถใช้คีย์เวิร์ด await เพื่อรอผลลัพธ์จากการทำงานที่ใช้เวลานาน เช่น การเรียก API
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
+
+        const response_daily = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&appid=${this.apiKey}`)
+        console.log("daily ", response_daily);
+
+        // ข้อความใต้ แสดงภูมิประเทศ
+        let city = response_daily.data.timezone.split('/')
+        let timezone_data = `${city[1]} ${response.data.sys.country} , ${city[0]}`; // Bangkok TH , Asia
+        this.timezone = timezone_data;
 
         // เมื่อการร้องขอสำเร็จ ให้เก็บข้อมูลใน weather
         console.log("data I received from weather api :", response.data);
@@ -108,7 +117,7 @@ export default {
           {id:2, title:"wind speed" , data: `${this.weather.wind.speed} m/s` , image: require('@/assets/icon/wind_speed.png')},
           // {id:3, title:"rain" , data: `${this.weather.rain} mm` , image: require('@/assets/icon/wind_speed.png')},
         )
-        console.log("dataOfWeather : " ,this.dataOfWeather);
+        // console.log("dataOfWeather : " ,this.dataOfWeather);
 
       } catch (error) {
         // จัดการข้อผิดพลาด
