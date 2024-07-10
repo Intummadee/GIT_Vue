@@ -13,7 +13,7 @@
             <div class="w-[70%] flex flex-col justify-between h-[200px] py-4">
               <div>
                 <h1 class="text-white text-2xl "> {{weather.name}} </h1>
-                <h1 class="text-secondary "> Thailand </h1>
+                <h1 class="text-secondary "> Thailand {{ weather.sys.country }}</h1>
               </div>
               <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> {{weather.main.temp}} °C</h1>
             </div>
@@ -32,10 +32,9 @@
                 <img :src=weather.image alt="Humidity" class="w-[25px] h-[25px]">
                 <div class="ml-1 border-l-4 pl-2 border-first">
                   <h2>{{weather.title}}:</h2>
-                  <h5 class="text-white font-bold text-lg">{{weather.data}} %</h5>
+                  <h5 class="text-white font-bold text-lg">{{weather.data}} </h5>
                 </div>
               </div>
-              <p>Wind Speed:  weather.wind.speed  m/s</p>
             </div>
 
           </div>
@@ -104,8 +103,8 @@ export default {
         // ⁡⁢⁣⁢Set weather information⁡ 
         this.weather = response.data;
         this.dataOfWeather.push(
-          {id:1, title:"humidity" , data: this.weather.main.humidity , image: require('@/assets/icon/humidity.png')}, 
-          {id:2, title:"wind speed" , data: this.weather.wind.speed , image: require('@/assets/icon/wind_speed.png')},
+          {id:1, title:"humidity" , data: `${this.weather.main.humidity} %`, image: require('@/assets/icon/humidity.png')}, 
+          {id:2, title:"wind speed" , data: `${this.weather.wind.speed} m/s` , image: require('@/assets/icon/wind_speed.png')},
         )
         console.log("dataOfWeather : " ,this.dataOfWeather);
 
