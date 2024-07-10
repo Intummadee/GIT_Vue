@@ -27,8 +27,8 @@
 
           <div class="bg-second rounded-2xl p-4">
             <div>Data</div>
-            <div class="grid grid-cols-2 mt-5">
-              <div class="flex" v-for="(weather) in dataOfWeather" :key="weather.title">
+            <div class="grid grid-cols-2 mt-5 gap-6">
+              <div class="flex " v-for="(weather) in dataOfWeather" :key="weather.title">
                 <img :src=weather.image alt="Humidity" class="w-[25px] h-[25px]">
                 <div class="ml-1 border-l-4 pl-2 border-first">
                   <h2>{{weather.title}}:</h2>
@@ -82,7 +82,7 @@ export default {
     getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.getWeather, this.showError);  // this.getWeather: ฟังก์ชัน callback ที่จะถูกเรียกเมื่อโลเคชั่นของผู้ใช้ถูกดึงมาเรียบร้อยแล้ว ฟังก์ชันนี้จะรับ parameter เป็น object position ที่มีพิกัด latitude และ longitude
-        this.getWeather();
+        
       } else {
         alert("Geolocation is not supported by this browser.");
       }
@@ -102,9 +102,11 @@ export default {
         console.log("data I received from weather api :", response.data);
         // ⁡⁢⁣⁢Set weather information⁡ 
         this.weather = response.data;
+        // console.log("this.weather.rain : ",this.weather.rain);
         this.dataOfWeather.push(
           {id:1, title:"humidity" , data: `${this.weather.main.humidity} %`, image: require('@/assets/icon/humidity.png')}, 
           {id:2, title:"wind speed" , data: `${this.weather.wind.speed} m/s` , image: require('@/assets/icon/wind_speed.png')},
+          // {id:3, title:"rain" , data: `${this.weather.rain} mm` , image: require('@/assets/icon/wind_speed.png')},
         )
         console.log("dataOfWeather : " ,this.dataOfWeather);
 

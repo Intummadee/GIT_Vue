@@ -1,4 +1,4 @@
-# GIT_Vue (Currently under developmentDoing)
+# GIT_Vue (Currently under development)
  
 
 
