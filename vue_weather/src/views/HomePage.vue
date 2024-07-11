@@ -7,7 +7,7 @@
       
       <!-- left element -->
       <div class="flex-col  w-[60%]">
-        <div v-if="weather">
+        <div v-show="weather">
         <!-- <div > -->
           <div class="flex flex-row justify-between ">
             <div class="w-[70%] flex flex-col justify-between h-[200px] py-4">
@@ -15,11 +15,11 @@
                 <h1 class="text-white text-2xl "> {{weather.name}} </h1>
                 <h1 class="text-secondary "> {{ timezone }}</h1>
               </div>
-              <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> {{weather.main.temp}} °C</h1>
+              <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> {{ current_data_weather.main }} {{ weather.main.temp }} °C</h1>
             </div>
 
             <div class=" w-[30%] flex justify-center	items-center ">
-              <img class="w-15 h-[150px]" src="https://cdn4.iconfinder.com/data/icons/the-weather-is-nice-today/64/weather_3-512.png" alt="icon-weather-now">
+              <img v-show="current_data_weather" class="w-15 h-[150px]" :src="current_data_weather.icon" alt="Weather Icon">
             </div>
           </div>
 
@@ -74,6 +74,7 @@ export default {
       apiKey: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
       dataOfWeather : [],
       timezone: "",
+      current_data_weather: null,
     }
   },
   created() {
@@ -113,11 +114,25 @@ export default {
         this.weather = response.data;
         // console.log("this.weather.rain : ",this.weather.rain);
         this.dataOfWeather.push(
-          {id:1, title:"humidity" , data: `${this.weather.main.humidity} %`, image: require('@/assets/icon/humidity.png')}, 
-          {id:2, title:"wind speed" , data: `${this.weather.wind.speed} m/s` , image: require('@/assets/icon/wind_speed.png')},
+          {id:1, title:"Humidity" , data: `${this.weather.main.humidity} %`, image: require('@/assets/icon/humidity.png')}, 
+          {id:2, title:"Wind Speed" , data: `${this.weather.wind.speed} m/s` , image: require('@/assets/icon/wind_speed.png')},
+          {id:3, title:"Cloudiness " , data: `${this.weather.clouds.all} %` , image: require('@/assets/icon/cloud.png')},
+          {id:3, title:"Rain volume " , data: `${this.weather.rain['1h']} mm` , image: require('@/assets/icon/rain_icon_data.png')},
           // {id:3, title:"rain" , data: `${this.weather.rain} mm` , image: require('@/assets/icon/wind_speed.png')},
         )
-        // console.log("dataOfWeather : " ,this.dataOfWeather);
+        
+        
+        var weather_now = response.data.weather[0]; // weather_now = {id: 801, main: 'Clouds', description: 'few clouds', icon: '02n'}
+        console.log("weather_now : ", weather_now);
+        if(weather_now.main == "Clouds"){
+          weather_now.icon = require("@/assets/icon/Clouds.png"); 
+        }
+        else if(weather_now.main == "Rain"){
+          weather_now.icon = require("@/assets/icon/Rain.png"); 
+        }
+        this.current_data_weather = weather_now;
+        // "Clouds"
+
 
       } catch (error) {
         // จัดการข้อผิดพลาด
