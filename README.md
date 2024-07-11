@@ -414,7 +414,7 @@ data(){
 - https://home.openweathermap.org/
 - https://tailwindcss.com/
 
-
+- https://openweathermap.org/api/uvi (uv api)
 
 
 

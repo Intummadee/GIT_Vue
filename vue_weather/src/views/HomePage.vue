@@ -15,7 +15,7 @@
                 <h1 class="text-white text-2xl "> {{weather.name}} </h1>
                 <h1 class="text-secondary "> {{ timezone }}</h1>
               </div>
-              <h1 class="items-end text-white font-bold tracking-wide	 text-3xl"> {{ current_data_weather.main }} {{ weather.main.temp }} °C</h1>
+              <h1 class="items-end text-white font-bold tracking-wide	 text-4xl"> {{ current_data_weather.main }} {{ weather.main.temp }} °C</h1>
             </div>
 
             <div class=" w-[30%] flex justify-center	items-center ">
@@ -31,8 +31,8 @@
               <div class="flex " v-for="(weather) in dataOfWeather" :key="weather.title">
                 <img :src=weather.image alt="Humidity" class="w-[25px] h-[25px]">
                 <div class="ml-1 border-l-4 pl-2 border-first">
-                  <h2>{{weather.title}}:</h2>
-                  <h5 class="text-white font-bold text-lg">{{weather.data}} </h5>
+                  <p class="text-base">{{weather.title}}:</p>
+                  <h5 class="text-white font-bold text-2xl ">{{weather.data}} </h5>
                 </div>
               </div>
             </div>
@@ -124,12 +124,30 @@ export default {
         
         var weather_now = response.data.weather[0]; // weather_now = {id: 801, main: 'Clouds', description: 'few clouds', icon: '02n'}
         console.log("weather_now : ", weather_now);
+
+        // All condition ==> https://openweathermap.org/weather-conditions
         if(weather_now.main == "Clouds"){
           weather_now.icon = require("@/assets/icon/Clouds.png"); 
         }
         else if(weather_now.main == "Rain"){
           weather_now.icon = require("@/assets/icon/Rain.png"); 
         }
+        else if(weather_now.main == "Thunderstorm"){
+          weather_now.icon = require("@/assets/icon/Thunderstorm.png"); 
+        }
+        else if(weather_now.main == "Drizzle"){
+          weather_now.icon = require("@/assets/icon/Drizzle.png"); 
+        }
+        else if(weather_now.main == "Snow"){
+          weather_now.icon = require("@/assets/icon/Snow.png"); 
+        }
+        else if(weather_now.main == "Atmosphere"){
+          weather_now.icon = require("@/assets/icon/Atmosphere.png"); 
+        }
+        else if(weather_now.main == "Clear"){
+          weather_now.icon = require("@/assets/icon/Clear.png"); 
+        }
+
         this.current_data_weather = weather_now;
         // "Clouds"
 
