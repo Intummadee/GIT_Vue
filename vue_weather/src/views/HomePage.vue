@@ -101,6 +101,13 @@ export default {
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
 
         const response_daily = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&appid=${this.apiKey}`)
+
+        const response_forecase_thirtyDay = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${this.apiKey}`)
+        // const response_forecase_thirtyDay = await axios.get(`https://pro.openweathermap.org/data/2.5/forecast/climate?lat=35&lon=139&appid=${this.apiKey}`)
+        // const response_forecase_thirtyDay = await axios.get(`https://pro.openweathermap.org/data/2.5/forecast/climate?lat=${lat}&lon=${lon}&appid=${this.apiKey}`)
+
+        console.log("response_forecase_thirtyDay 🔆🔆: " , response_forecase_thirtyDay);
+
         console.log("daily ", response_daily);
 
         // ข้อความใต้ แสดงภูมิประเทศ
