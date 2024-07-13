@@ -37,8 +37,15 @@
                 </div>
               </div>
             </div>
-
           </div>
+
+          <div class="bg-slate-300">
+            <div>Forecast 3 Hours</div>
+            
+            
+          </div>
+
+
           
         </div>
       </div>
@@ -79,12 +86,14 @@ export default {
       currentTimeInLocation: "", // หาเวลาตาม location เช่น Asia/Bangkok , America/New_York
       currentTimeInLocationUpdate:"", // อัพเดตเวลาเรื่อยๆทุกๆ 1 วินาที
       dataForSevenForecast : [],
+      dataEachThreeHoursForecast : [],
     }
   },
   created() {
-    
     this.getLocation();
-    setInterval(this.updateTime, 1000); // เรียกใช้ updateTime() ทุกๆ 1 วินาที
+    setTimeout(()=>{ // setTimeout: ทำงานครั้งเดียวหลังจากผ่านไป 5 วินาที
+      setInterval(this.updateTime, 1000); 
+    }, 5000)
   },
   methods: {
     getLocation() {
@@ -121,17 +130,44 @@ export default {
         console.log("");
 
 
+        // แสดงสภาพอากาศในอีก 7 วัน
+        // Ref => https://openweathermap.org/api/one-call-3#multi
+        const response_daily = (await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&units=metric&appid=${this.apiKey}`)).data
+        console.log("response_daily 🌏🌏", response_daily);
+        
+        // 3, 6, 9 ,12 , 15, 18 
+        for (let i = 3; i < 19; i+=3) {
+          this.dataEachThreeHoursForecast.push(response_daily.hourly[i])
+        }
+        
+
+        const timestamp = response_daily.hourly[3].dt;
+        const date = new Date(timestamp * 1000); // คูณ 1000 เพื่อแปลงเป็นมิลลิวินาที
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // getMonth() จะเริ่มต้นที่ 0 (มกราคม = 0), จึงต้องบวก 1 เพื่อเริ่มจาก 1 (มกราคม)
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();
+        const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+        console.log(`Timestamp ${timestamp} แปลงเป็นวันที่และเวลาคือ: ${formattedDate}`);
+        console.log(timestamp);
+        
+        
+
+
+        // dataForSevenForecast
 
 
         // ⁡⁢⁢⁢หาเวลา ตาม location⁡ ================================================
-        this.currentTimeInLocation =  response_daily.data.timezone;
+        this.currentTimeInLocation =  response_daily.timezone;
         // ====================================================================
       
 
         
 
         // ⁡⁢⁢⁢ข้อความแสดงประเทศ และ ทวีป⁡ เช่น TH , Asia ============================
-        let city = response_daily.data.timezone.split('/')
+        let city = response_daily.timezone.split('/')
         let timezone_data = `${response.data.sys.country} , ${city[0]}`; // Bangkok TH , Asia
         this.timezone = timezone_data;
         // ====================================================================
@@ -139,7 +175,7 @@ export default {
         
         
         // ⁡⁢⁣⁢Set weather information⁡ ============================================
-        // ref ==> https://openweathermap.org/current
+        // Ref => https://openweathermap.org/current
         this.weather = response.data;
         console.log("response.data || this.weather ୭ 🧷 ✧ ˚. ᵎᵎ 🎀 :", response.data);
         let weather_rain = this.weather.rain == null ? "0" : `${this.weather.rain['1h']}`;
@@ -175,11 +211,6 @@ export default {
         // ====================================================================
         
         
-        // แสดงสภาพอากาศในอีก 7 วัน
-        const response_daily = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&appid=${this.apiKey}`)
-        console.log("response_daily 🌏🌏", response_daily);
-
-        // dataForSevenForecast
         
         
       } catch (error) {
@@ -218,6 +249,18 @@ export default {
         const result =  formatter.format(now);
         // console.log(`Current time in ⚽⚽⚽ ${this.currentTimeInLocation}: ${result}`);
         this.currentTimeInLocationUpdate = result;
+    },
+    convertTimestamp(timestamp) {
+      const date = new Date(timestamp * 1000); // คูณ 1000 เพื่อแปลงเป็นมิลลิวินาที
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; // getMonth() จะเริ่มต้นที่ 0 (มกราคม = 0), จึงต้องบวก 1 เพื่อเริ่มจาก 1 (มกราคม)
+      const day = date.getDate();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
+      const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+      console.log(`Timestamp ${timestamp} แปลงเป็นวันที่และเวลาคือ: ${formattedDate}`);
+      return formattedDate;
     }
   }
 }
