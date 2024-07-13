@@ -7,13 +7,14 @@
       
       <!-- left element -->
       <div class="flex-col  w-[60%]">
-        <div v-show="weather">
+        <div v-if="weather">
         <!-- <div > -->
           <div class="flex flex-row justify-between ">
             <div class="w-[70%] flex flex-col justify-between h-[200px] py-4">
               <div>
-                <h1 class="text-white text-2xl "> {{weather.name}} </h1>
-                <h1 class="text-secondary "> {{ timezone }}</h1>
+                <h1 class="text-white text-2xl font-bold"> {{weather.name}} </h1>
+                <h1 class="text-secondary "> {{ currentTimeInLocationUpdate }} | {{ timezone }}</h1>
+                
               </div>
               <h1 class="items-end text-white font-bold tracking-wide	 text-4xl"> {{ current_data_weather.main }} {{ weather.main.temp }} °C</h1>
             </div>
@@ -75,10 +76,15 @@ export default {
       dataOfWeather : [],
       timezone: "",
       current_data_weather: null,
+      currentTimeInLocation: "", // หาเวลาตาม location เช่น Asia/Bangkok , America/New_York
+      currentTimeInLocationUpdate:"", // อัพเดตเวลาเรื่อยๆทุกๆ 1 วินาที
+      dataForSevenForecast : [],
     }
   },
   created() {
+    
     this.getLocation();
+    setInterval(this.updateTime, 1000); // เรียกใช้ updateTime() ทุกๆ 1 วินาที
   },
   methods: {
     getLocation() {
@@ -100,68 +106,86 @@ export default {
         // ภายในฟังก์ชัน async คุณสามารถใช้คีย์เวิร์ด await เพื่อรอผลลัพธ์จากการทำงานที่ใช้เวลานาน เช่น การเรียก API
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
 
-        const response_daily = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&appid=${this.apiKey}`)
+        
 
-        const response_forecase_thirtyDay = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${this.apiKey}`)
-        // const response_forecase_thirtyDay = await axios.get(`https://pro.openweathermap.org/data/2.5/forecast/climate?lat=35&lon=139&appid=${this.apiKey}`)
-        // const response_forecase_thirtyDay = await axios.get(`https://pro.openweathermap.org/data/2.5/forecast/climate?lat=${lat}&lon=${lon}&appid=${this.apiKey}`)
+        
+        
+        console.log("");
+        // const response_bulk_sevenday =  await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${this.apiKey}`)
+        // console.log("response_bulk_sevenday : 🏳️‍🌈🏳️‍🌈" , response_bulk_sevenday);
+        console.log("");
+        
+        const response_forecase_sixteenDay = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${this.apiKey}`)
+        const list_Forecast_sixteenDay = [...response_forecase_sixteenDay.data.list];
+        console.log("response_forecase_sixteenDay 🔆🔆: " , list_Forecast_sixteenDay);
+        console.log("");
 
-        console.log("response_forecase_thirtyDay 🔆🔆: " , response_forecase_thirtyDay);
 
-        console.log("daily ", response_daily);
 
-        // ข้อความใต้ แสดงภูมิประเทศ
+
+        // ⁡⁢⁢⁢หาเวลา ตาม location⁡ ================================================
+        this.currentTimeInLocation =  response_daily.data.timezone;
+        // ====================================================================
+      
+
+        
+
+        // ⁡⁢⁢⁢ข้อความแสดงประเทศ และ ทวีป⁡ เช่น TH , Asia ============================
         let city = response_daily.data.timezone.split('/')
-        let timezone_data = `${city[1]} ${response.data.sys.country} , ${city[0]}`; // Bangkok TH , Asia
+        let timezone_data = `${response.data.sys.country} , ${city[0]}`; // Bangkok TH , Asia
         this.timezone = timezone_data;
-
-        // เมื่อการร้องขอสำเร็จ ให้เก็บข้อมูลใน weather
-        console.log("data I received from weather api :", response.data);
-        // ⁡⁢⁣⁢Set weather information⁡ 
+        // ====================================================================
+        
+        
+        
+        // ⁡⁢⁣⁢Set weather information⁡ ============================================
+        // ref ==> https://openweathermap.org/current
         this.weather = response.data;
-        // console.log("this.weather.rain : ",this.weather.rain);
+        console.log("response.data || this.weather ୭ 🧷 ✧ ˚. ᵎᵎ 🎀 :", response.data);
+        let weather_rain = this.weather.rain == null ? "0" : `${this.weather.rain['1h']}`;
+        let weather_snow = this.weather.snow == null ? "0" : `${this.weather.snow['1h']}`;
         this.dataOfWeather.push(
           {id:1, title:"Humidity" , data: `${this.weather.main.humidity} %`, image: require('@/assets/icon/humidity.png')}, 
-          {id:2, title:"Wind Speed" , data: `${this.weather.wind.speed} m/s` , image: require('@/assets/icon/wind_speed.png')},
+          {id:2, title:"Wind Speed" , data: `${this.weather.wind.speed} meter/sec` , image: require('@/assets/icon/wind_speed.png')},
           {id:3, title:"Cloudiness " , data: `${this.weather.clouds.all} %` , image: require('@/assets/icon/cloud.png')},
-          {id:3, title:"Rain volume " , data: `${this.weather.rain['1h']} mm` , image: require('@/assets/icon/rain_icon_data.png')},
-          // {id:3, title:"rain" , data: `${this.weather.rain} mm` , image: require('@/assets/icon/wind_speed.png')},
+          {id:4, title:"Rain volume " , data: `${weather_rain} mm` , image: require('@/assets/icon/rain_icon_data.png')},
+          {id:5, title:"Visibility " , data: `${this.weather.visibility / 1000} km` , image: require('@/assets/icon/visibility.png')},
+          {id:6, title:"Snow " , data: `${weather_snow} mm` , image: require('@/assets/icon/snow_icon.png')},
         )
+        // ====================================================================
         
         
+        
+        
+        // ⁡⁢⁢⁢กำหนดไอคอนตามสภาพอากาศ⁡ ============================================
         var weather_now = response.data.weather[0]; // weather_now = {id: 801, main: 'Clouds', description: 'few clouds', icon: '02n'}
-        console.log("weather_now : ", weather_now);
-
+        console.log("weather_now 🏰🏰₊˚⊹♡🎠✨ : ", response.data.weather[0]);
         // All condition ==> https://openweathermap.org/weather-conditions
-        if(weather_now.main == "Clouds"){
-          weather_now.icon = require("@/assets/icon/Clouds.png"); 
-        }
-        else if(weather_now.main == "Rain"){
-          weather_now.icon = require("@/assets/icon/Rain.png"); 
-        }
-        else if(weather_now.main == "Thunderstorm"){
-          weather_now.icon = require("@/assets/icon/Thunderstorm.png"); 
-        }
-        else if(weather_now.main == "Drizzle"){
-          weather_now.icon = require("@/assets/icon/Drizzle.png"); 
-        }
-        else if(weather_now.main == "Snow"){
-          weather_now.icon = require("@/assets/icon/Snow.png"); 
-        }
-        else if(weather_now.main == "Atmosphere"){
-          weather_now.icon = require("@/assets/icon/Atmosphere.png"); 
-        }
-        else if(weather_now.main == "Clear"){
-          weather_now.icon = require("@/assets/icon/Clear.png"); 
-        }
-
+        const iconMap = {
+          Clouds: require("@/assets/icon/Clouds.png"),
+          Rain: require("@/assets/icon/Rain.png"),
+          Thunderstorm: require("@/assets/icon/Thunderstorm.png"),
+          Drizzle: require("@/assets/icon/Drizzle.png"),
+          Snow: require("@/assets/icon/Snow.png"),
+          Atmosphere: require("@/assets/icon/Atmosphere.png"),
+          Clear: require("@/assets/icon/Clear.png")
+        };
+        weather_now.icon = iconMap[weather_now.main] || ""; // ถ้าไม่พบ main ใน iconMap จะกำหนดเป็น "" 
         this.current_data_weather = weather_now;
-        // "Clouds"
+        // ====================================================================
+        
+        
+        // แสดงสภาพอากาศในอีก 7 วัน
+        const response_daily = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&appid=${this.apiKey}`)
+        console.log("response_daily 🌏🌏", response_daily);
 
-
+        // dataForSevenForecast
+        
+        
       } catch (error) {
         // จัดการข้อผิดพลาด
         console.error("Error fetching weather data:", error.response ? error.response.data : error.message);
+        console.log("message: ❌❌❌❌ มี error เกิดขึ้นในฟังชัน getWeather ==> ",error.message);
       }
     },
     showError(error) {
@@ -179,6 +203,21 @@ export default {
           alert("An unknown error occurred.");
           break;
       }
+    },
+    updateTime() {
+      // ฟังชันไว้อัพเดตเวลาทุกๆ 1 วินาที
+      const options = {
+          timeZone: this.currentTimeInLocation,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        const now = new Date();
+        const result =  formatter.format(now);
+        // console.log(`Current time in ⚽⚽⚽ ${this.currentTimeInLocation}: ${result}`);
+        this.currentTimeInLocationUpdate = result;
     }
   }
 }
