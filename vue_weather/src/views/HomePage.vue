@@ -1,10 +1,11 @@
 <template>
   <div class="text-secondary">
     <!-- <h1>Weather</h1> -->
-    <div class="bg-orange-900  ">Search</div>
+
+    <input v-model="searchCity" placeholder="Search City"  class="search-input w-max focus:caret-indigo-500">
+    <p>{{ searchCity }}</p>
+
     <div class="flex flex-row">
-      
-      
       <!-- left element -->
       <div class="flex-col  w-[60%]">
         <div v-if="weather">
@@ -39,15 +40,15 @@
             </div>
           </div>
           
-          <div class="bg-first" v-if="dataEachThreeHoursForecast">
+          <div class="bg-second rounded-2xl p-4 mt-5" v-if="dataEachThreeHoursForecast">
             <div>Forecast 3 Hours</div>
             <div class="grid grid-cols-6 ">
-              <div class="flex flex-col justify-items-center justify-self-center p-4" v-for="( eachThreeHoursForecast , index ) in dataEachThreeHoursForecast" :key="index">
-                <p>{{ eachThreeHoursForecast.dt }} </p>
-                <img :src="eachThreeHoursForecast.icon" alt="iconWeather" class="w-[80px] h-[80px]">
-                <p>{{ eachThreeHoursForecast.temp }} °C</p>
-                <!-- <div class="bg-red-400 justify-self-center"> -->
-                <!-- </div> -->
+              <div class="flex flex-col justify-items-center justify-self-center p-4 text-center" v-for="( eachThreeHoursForecast , index ) in dataEachThreeHoursForecast" :key="index">
+                
+                  <p >{{ eachThreeHoursForecast.dt }} </p>
+                  <img :src="eachThreeHoursForecast.icon" alt="iconWeather" class="w-[80px] h-[80px]">
+                  <p>{{ eachThreeHoursForecast.temp }} °C</p>
+                
                 
                 
               </div>
@@ -97,6 +98,7 @@ export default {
       currentTimeInLocationUpdate:"", // อัพเดตเวลาเรื่อยๆทุกๆ 1 วินาที
       dataForSevenForecast : [],
       dataEachThreeHoursForecast : [],
+      searchCity: "",
     }
   },
   created() {
