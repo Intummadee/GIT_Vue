@@ -2,7 +2,7 @@
  
 
 
-
+<img width="100%" height="60%" src="https://github.com/Intummadee/GIT_Vue/blob/main/img_Git/UI.png">
 
 
 
