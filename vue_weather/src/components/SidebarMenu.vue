@@ -14,7 +14,7 @@ export default {
     return {
       navLinks: [
         {id:1, title:"Home"},
-        {id:2, title:"Weather"}
+        {id:2, title:"PM"}
       ],
     }
   },
