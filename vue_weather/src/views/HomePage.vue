@@ -38,10 +38,20 @@
               </div>
             </div>
           </div>
-
-          <div class="bg-slate-300">
+          
+          <div class="bg-first" v-if="dataEachThreeHoursForecast">
             <div>Forecast 3 Hours</div>
-            
+            <div class="grid grid-cols-6 ">
+              <div class="flex flex-col justify-items-center justify-self-center p-4" v-for="( eachThreeHoursForecast , index ) in dataEachThreeHoursForecast" :key="index">
+                <p>{{ eachThreeHoursForecast.dt }} </p>
+                <img :src="eachThreeHoursForecast.icon" alt="iconWeather" class="w-[80px] h-[80px]">
+                <p>{{ eachThreeHoursForecast.temp }} °C</p>
+                <!-- <div class="bg-red-400 justify-self-center"> -->
+                <!-- </div> -->
+                
+                
+              </div>
+            </div>
             
           </div>
 
@@ -130,28 +140,44 @@ export default {
         console.log("");
 
 
+        // icon เปลี่ยนไปตาม สภาพภูมิอากาศ 
+        const iconMap = {
+          Clouds: require("@/assets/icon/Clouds.png"),
+          Rain: require("@/assets/icon/Rain.png"),
+          Thunderstorm: require("@/assets/icon/Thunderstorm.png"),
+          Drizzle: require("@/assets/icon/Drizzle.png"),
+          Snow: require("@/assets/icon/Snow.png"),
+          Atmosphere: require("@/assets/icon/Atmosphere.png"),
+          Clear: require("@/assets/icon/Clear.png")
+        };
+
         // แสดงสภาพอากาศในอีก 7 วัน
         // Ref => https://openweathermap.org/api/one-call-3#multi
         const response_daily = (await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&units=metric&appid=${this.apiKey}`)).data
         console.log("response_daily 🌏🌏", response_daily);
         
+
+
+
         // 3, 6, 9 ,12 , 15, 18 
         for (let i = 3; i < 19; i+=3) {
-          this.dataEachThreeHoursForecast.push(response_daily.hourly[i])
+          let timestamp = response_daily.hourly[i].dt;
+          let date = new Date(timestamp * 1000); // คูณ 1000 เพื่อแปลงเป็นมิลลิวินาที
+          let year = date.getFullYear();
+          let month = date.getMonth() + 1; // getMonth() จะเริ่มต้นที่ 0 (มกราคม = 0), จึงต้องบวก 1 เพื่อเริ่มจาก 1 (มกราคม)
+          let day = date.getDate();
+          let hours = date.getHours();
+          let minutes = date.getMinutes();
+          let seconds = date.getSeconds();
+          let formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+          console.log(`Timestamp ${timestamp} แปลงเป็นวันที่และเวลาคือ: ${formattedDate}`);
+          let response_daily_copy =  response_daily.hourly[i]
+          response_daily_copy.icon = iconMap[response_daily_copy.weather[0].main] || ""
+          response_daily_copy.dt = `${hours}:00`
+          this.dataEachThreeHoursForecast.push(response_daily_copy)
         }
         
 
-        const timestamp = response_daily.hourly[3].dt;
-        const date = new Date(timestamp * 1000); // คูณ 1000 เพื่อแปลงเป็นมิลลิวินาที
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1; // getMonth() จะเริ่มต้นที่ 0 (มกราคม = 0), จึงต้องบวก 1 เพื่อเริ่มจาก 1 (มกราคม)
-        const day = date.getDate();
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const seconds = date.getSeconds();
-        const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-        console.log(`Timestamp ${timestamp} แปลงเป็นวันที่และเวลาคือ: ${formattedDate}`);
-        console.log(timestamp);
         
         
 
@@ -197,15 +223,6 @@ export default {
         var weather_now = response.data.weather[0]; // weather_now = {id: 801, main: 'Clouds', description: 'few clouds', icon: '02n'}
         console.log("weather_now 🏰🏰₊˚⊹♡🎠✨ : ", response.data.weather[0]);
         // All condition ==> https://openweathermap.org/weather-conditions
-        const iconMap = {
-          Clouds: require("@/assets/icon/Clouds.png"),
-          Rain: require("@/assets/icon/Rain.png"),
-          Thunderstorm: require("@/assets/icon/Thunderstorm.png"),
-          Drizzle: require("@/assets/icon/Drizzle.png"),
-          Snow: require("@/assets/icon/Snow.png"),
-          Atmosphere: require("@/assets/icon/Atmosphere.png"),
-          Clear: require("@/assets/icon/Clear.png")
-        };
         weather_now.icon = iconMap[weather_now.main] || ""; // ถ้าไม่พบ main ใน iconMap จะกำหนดเป็น "" 
         this.current_data_weather = weather_now;
         // ====================================================================
