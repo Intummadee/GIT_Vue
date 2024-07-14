@@ -34,7 +34,7 @@
               <div class="flex " v-for="(weather) in dataOfWeather" :key="weather.title">
                 <img :src=weather.image alt="Humidity" class="w-[25px] h-[25px]">
                 <div class="ml-1 border-l-4 pl-2 border-first">
-                  <p class="text-base">{{weather.title}}:</p>
+                  <p class="text-base">{{weather.title}} : </p>
                   <h5 class="text-white font-bold text-2xl ">{{weather.data}} </h5>
                 </div>
               </div>
@@ -212,10 +212,10 @@ export default {
         this.dataOfWeather.push(
           {id:1, title:"Humidity" , data: `${this.weather.main.humidity} %`, image: require('@/assets/icon/humidity.png')}, 
           {id:2, title:"Wind Speed" , data: `${this.weather.wind.speed} meter/sec` , image: require('@/assets/icon/wind_speed.png')},
-          {id:3, title:"Cloudiness " , data: `${this.weather.clouds.all} %` , image: require('@/assets/icon/cloud.png')},
-          {id:4, title:"Rain volume " , data: `${weather_rain} mm` , image: require('@/assets/icon/rain_icon_data.png')},
-          {id:5, title:"Visibility " , data: `${this.weather.visibility / 1000} km` , image: require('@/assets/icon/visibility.png')},
-          {id:6, title:"Snow " , data: `${weather_snow} mm` , image: require('@/assets/icon/snow_icon.png')},
+          {id:3, title:"Cloudiness" , data: `${this.weather.clouds.all} %` , image: require('@/assets/icon/cloud.png')},
+          {id:4, title:"Rain volume" , data: `${weather_rain} mm` , image: require('@/assets/icon/rain_icon_data.png')},
+          {id:5, title:"Visibility" , data: `${this.weather.visibility / 1000} km` , image: require('@/assets/icon/visibility.png')},
+          {id:6, title:"Snow" , data: `${weather_snow} mm` , image: require('@/assets/icon/snow_icon.png')},
         )
         // ====================================================================
         
