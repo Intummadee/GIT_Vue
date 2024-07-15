@@ -72,8 +72,14 @@
 
       <!-- right element -->
       <div class="flex flex-col w-[40%] ml-[4rem] ">
-        สรุปอากาศของในอีก 5 วัน
-
+        Weather in the next 6 days
+        <div v-show="dataForSevenDayForecast.length>0">
+          <div v-for="(weather) in dataForSevenDayForecast" :key="weather.date" class="bg-second mt-3 rounded-lg p-3">
+            <p>{{ weather.day }}</p>
+            <p>{{ weather.date }}</p>
+            <p>{{ weather.mostFrequentCondition }}</p>
+          </div>
+        </div>
       </div>
 
 
@@ -101,7 +107,7 @@ export default {
       current_data_weather: null,
       currentTimeInLocation: "", // หาเวลาตาม location เช่น Asia/Bangkok , America/New_York
       currentTimeInLocationUpdate:"", // อัพเดตเวลาเรื่อยๆทุกๆ 1 วินาที
-      dataForSevenForecast : [],
+      dataForSevenDayForecast : [],
       dataEachThreeHoursForecast : [],
       searchCity: "",
       findWeatherBeforeCountTime: false
@@ -140,7 +146,7 @@ export default {
     
       
 
-        // icon เปลี่ยนไปตาม สภาพภูมิอากาศ 
+        // icon เปลี่ยนไปตาม สภาพภูมิอากาศ อันนี้เป็น icon ตามสภาพภูมิอากาศของ openweathermap
         const iconMap = {
           Clouds: require("@/assets/icon/Clouds.png"),
           Rain: require("@/assets/icon/Rain.png"),
@@ -237,10 +243,54 @@ export default {
 
 
 
-        // ต้องสมัครและรับ API key จาก WeatherAPI.com เพื่อ⁡⁢⁢⁣พยากรณ์อากาศในอีก 7 วัน⁡ ====
+        // // icon เปลี่ยนไปตาม สภาพภูมิอากาศ อันนี้เป็น icon ตามสภาพภูมิอากาศของ weatherapi.com
+        // const iconMap_weatherapi = {
+        //   Clouds: require("@/assets/icon/Clouds.png"),
+        //   Rain: require("@/assets/icon/Rain.png"),
+        //   Thunderstorm: require("@/assets/icon/Thunderstorm.png"),
+        //   Drizzle: require("@/assets/icon/Drizzle.png"),
+        //   Snow: require("@/assets/icon/Snow.png"),
+        //   Atmosphere: require("@/assets/icon/Atmosphere.png"),
+        //   Clear: require("@/assets/icon/Clear.png")
+        // };
+
+        // 📍 ต้องสมัครและรับ API key จาก WeatherAPI.com เพื่อ⁡⁢⁢⁣พยากรณ์อากาศในอีก 7 วัน⁡ ====
         // Ref => https://www.weatherapi.com/my/
         const response_ForeCastSevenDays = (await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${this.apiKeyWeatherAPI}&q=${lat},${lon}&days=7`)).data;
         console.log("response_ForeCastSevenDays ", response_ForeCastSevenDays);
+        let list = [...response_ForeCastSevenDays.forecast.forecastday]
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        for (let i = 0;i < list.length; i++ ){
+          let dateString = list[i].date; // '2024-07-16'
+          let date = new Date(dateString);
+          list[i].day = daysOfWeek[date.getDay()];
+
+
+
+
+
+          // หาว่า สภาพอากาศที่มีมากที่สุดในวันนั้น คืออากาศอะไร โดยใช้วิธีเปรียบเทียบด้วยว่า ความถี่ของแต่ละสภาพอากาศอันไหนมากที่สุด
+          const frequencyMap = {};
+          list[i].hour.forEach(data => {
+            const condition = data.condition.text;
+            frequencyMap[condition] = (frequencyMap[condition] || 0) + 1; // (frequencyMap[condition] || 0) => ถ้าค่าทางซ้าย (frequencyMap[condition]) เป็น false (เช่น undefined) จะใช้ค่าทางขวา (0)
+            // เป็นเทคนิคชื่อ "default value" หรือ "fallback value"
+          });
+
+          console.log("frequencyMap : ", frequencyMap);
+ 
+      
+          let mostFrequentCondition = '';
+          let highestFrequency = 0;
+          for (const condition in frequencyMap) {
+            if (frequencyMap[condition] > highestFrequency) {
+              mostFrequentCondition = condition;
+              highestFrequency = frequencyMap[condition];
+            }
+          }
+          list[i].mostFrequentCondition = mostFrequentCondition; 
+          this.dataForSevenDayForecast.push(list[i])
+        }
         // ====================================================================
 
 
