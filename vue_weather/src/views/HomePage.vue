@@ -95,6 +95,7 @@ export default {
     return {
       weather: null,
       apiKey: process.env.VUE_APP_OPENWEATHERMAP_API_KEY,
+      apiKeyWeatherAPI: process.env.VUE_APP_WEATHER_API_KEY,
       dataOfWeather : [],
       timezone: "",
       current_data_weather: null,
@@ -132,47 +133,12 @@ export default {
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
         console.log("response : ",response);
         
-        const idOfCity = response.data.id; // id ของ location 
+        // const idOfCity = response.data.id; // id ของ location 
         
 
 
-        const API_KEY = 'd8949fc313444a98a8e124834241507'; // ต้องสมัครและรับ API key จาก WeatherAPI.com
-        const CITY = 'Bangkok';
-        // d8949fc313444a98a8e124834241507
-        const url = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${CITY}&days=7`);
-        console.log("uri ",url);
-        
-
-
-       
-        
-        // ไว้ใช้แสดงอากาศ 7 วันโดยเฉลี่ย ==========================================
-        // Ref => https://openweathermap.org/appid ของฟรี มันใช้ได้แค่ 3-hour Forecast 5 days 
-        const response_FiveDaysAverageWeather = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=${idOfCity}&appid=${this.apiKey}`)
-        const list_Forecast_FiveDay = [...response_FiveDaysAverageWeather.data.list];
-        console.log("list_Forecast_FiveDay 🔆🔆: " , list_Forecast_FiveDay);
-
-
-        // ในการพยากรณ์อากาศอีกห้าวัน เราจะนับวันใหม่ ที่ไม่ใช่วันนี้ เลยต้องหา index ของ object ที่ขึ้นวันใหม่ หรือก็คือ เวลาของobjectที่เป้น 00:00:00 หรือเวลาเที่ยงคืน อันแรก 
-        const condition = (item) => item.dt_txt.split(" ")[1] =="00:00:00";
-        const firstMatchNewDayIndex = list_Forecast_FiveDay.findIndex(condition);
-        console.log("firstMatch: " , firstMatchNewDayIndex);
-
-        // หลังจากได้วันพรุ่งนี้มาแล้ว เราจะเอาวันที่ของวันพรุ่งนี้ มาบวกไปอีกสี่ เพื่อจะเอาข้อมูลถึงแค่นี้
-
-
-
-        for (let i = firstMatchNewDayIndex; i < list_Forecast_FiveDay.length; i++){
-          // console.log(list_Forecast_FiveDay[i].dt_txt);
-          
-        }
-
-
-
-        console.log("");
-        // ====================================================================
-
-
+    
+      
 
         // icon เปลี่ยนไปตาม สภาพภูมิอากาศ 
         const iconMap = {
@@ -268,6 +234,20 @@ export default {
         // ====================================================================
         
         
+
+
+
+        // ต้องสมัครและรับ API key จาก WeatherAPI.com เพื่อ⁡⁢⁢⁣พยากรณ์อากาศในอีก 7 วัน⁡ ====
+        // Ref => https://www.weatherapi.com/my/
+        const response_ForeCastSevenDays = (await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${this.apiKeyWeatherAPI}&q=${lat},${lon}&days=7`)).data;
+        console.log("response_ForeCastSevenDays ", response_ForeCastSevenDays);
+        // ====================================================================
+
+
+
+
+
+
         
         this.findWeatherBeforeCountTime = true; // เปลี่ยนเปน true เพื่อให้นับเวลาตามวิ
       } catch (error) {
