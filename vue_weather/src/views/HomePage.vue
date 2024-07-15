@@ -50,7 +50,7 @@
                 
                   <p >{{ eachThreeHoursForecast.dt }} </p>
                   <img :src="eachThreeHoursForecast.icon" alt="iconWeather" class="w-[80px] h-[80px]">
-                  <p>{{ eachThreeHoursForecast.temp }} °C</p>
+                  <p class="text-white text-xl font-bold">{{ eachThreeHoursForecast.temp }}°</p>
                 
                 
                 
@@ -72,7 +72,8 @@
 
       <!-- right element -->
       <div class="flex flex-col w-[40%] ml-[4rem] ">
-        สรุปอากาศของทั้งสัปดาห์
+        สรุปอากาศของในอีก 5 วัน
+
       </div>
 
 
@@ -107,9 +108,8 @@ export default {
   },
   created() {
     this.getLocation();
-    if(this.findWeatherBeforeCountTime == true){
-      setInterval(this.updateTime, 1000); 
-    } // setTimeout: ทำงานครั้งเดียวหลังจากผ่านไป 5 วินาที
+    
+    setInterval(this.updateTimetest, 1000);  // setTimeout: ทำงานครั้งเดียวหลังจากผ่านไป 5 วินาที
   },
   methods: {
     getLocation() {
@@ -130,20 +130,37 @@ export default {
         // ใช้ await เพื่อรอการตอบสนองจาก axios.get()
         // ภายในฟังก์ชัน async คุณสามารถใช้คีย์เวิร์ด await เพื่อรอผลลัพธ์จากการทำงานที่ใช้เวลานาน เช่น การเรียก API
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
+        console.log("response : ",response);
+        
+        const idOfCity = response.data.id; // id ของ location 
+        
+        
+        // ไว้ใช้แสดงอากาศ 7 วันโดยเฉลี่ย ==========================================
+        // Ref => https://openweathermap.org/appid ของฟรี มันใช้ได้แค่ 3-hour Forecast 5 days 
+        const response_FiveDaysAverageWeather = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=${idOfCity}&appid=${this.apiKey}`)
+        const list_Forecast_FiveDay = [...response_FiveDaysAverageWeather.data.list];
+        console.log("list_Forecast_FiveDay 🔆🔆: " , list_Forecast_FiveDay);
 
-        
 
-        
-        
+        // ในการพยากรณ์อากาศอีกห้าวัน เราจะนับวันใหม่ ที่ไม่ใช่วันนี้ เลยต้องหา index ของ object ที่ขึ้นวันใหม่ หรือก็คือ เวลาของobjectที่เป้น 00:00:00 หรือเวลาเที่ยงคืน อันแรก 
+        const condition = (item) => item.dt_txt.split(" ")[1] =="00:00:00";
+        const firstMatchNewDayIndex = list_Forecast_FiveDay.findIndex(condition);
+        console.log("firstMatch: " , firstMatchNewDayIndex);
+
+        // หลังจากได้วันพรุ่งนี้มาแล้ว เราจะเอาวันที่ของวันพรุ่งนี้ มาบวกไปอีกสี่ เพื่อจะเอาข้อมูลถึงแค่นี้
+
+
+
+        for (let i = firstMatchNewDayIndex; i < list_Forecast_FiveDay.length; i++){
+          // console.log(list_Forecast_FiveDay[i].dt_txt);
+          
+        }
+
+
+
         console.log("");
-        // const response_bulk_sevenday =  await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${this.apiKey}`)
-        // console.log("response_bulk_sevenday : 🏳️‍🌈🏳️‍🌈" , response_bulk_sevenday);
-        console.log("");
-        
-        const response_forecase_sixteenDay = await axios.get(`http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=${this.apiKey}`)
-        const list_Forecast_sixteenDay = [...response_forecase_sixteenDay.data.list];
-        console.log("response_forecase_sixteenDay 🔆🔆: " , list_Forecast_sixteenDay);
-        console.log("");
+        // ====================================================================
+
 
 
         // icon เปลี่ยนไปตาม สภาพภูมิอากาศ 
@@ -157,15 +174,21 @@ export default {
           Clear: require("@/assets/icon/Clear.png")
         };
 
-        // แสดงสภาพอากาศในอีก 7 วัน
+
+
+
+
+
+        // ไว้ใช้ใน Forecast 3 Hours ============================================
         // Ref => https://openweathermap.org/api/one-call-3#multi
         const response_daily = (await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=daily&units=metric&appid=${this.apiKey}`)).data
         console.log("response_daily 🌏🌏", response_daily);
+        // ====================================================================
         
 
 
 
-        // 3, 6, 9 ,12 , 15, 18 
+        // 3, 6, 9 ,12 , 15, 18 พยากรณ์อากาศทุก 3 ชม.ข้างหน้า อีก 6 รอบ ==========
         for (let i = 3; i < 19; i+=3) {
           let timestamp = response_daily.hourly[i].dt;
           let date = new Date(timestamp * 1000); // คูณ 1000 เพื่อแปลงเป็นมิลลิวินาที
@@ -182,13 +205,13 @@ export default {
           response_daily_copy.dt = `${hours}:00`
           this.dataEachThreeHoursForecast.push(response_daily_copy)
         }
+        // ====================================================================
         
 
         
         
 
 
-        // dataForSevenForecast
 
 
         // ⁡⁢⁢⁢หาเวลา ตาม location⁡ ================================================
@@ -240,6 +263,7 @@ export default {
         // จัดการข้อผิดพลาด
         console.error("Error fetching weather data:", error.response ? error.response.data : error.message);
         console.log("message: ❌❌❌❌ มี error เกิดขึ้นในฟังชัน getWeather ==> ",error.message);
+        this.findWeatherBeforeCountTime = false;
       }
     },
     showError(error) {
@@ -258,9 +282,14 @@ export default {
           break;
       }
     },
+    updateTimetest(){
+      if(this.findWeatherBeforeCountTime == true){
+        this.updateTime();
+      }
+    },
     updateTime() {
       // ฟังชันไว้อัพเดตเวลาทุกๆ 1 วินาที
-      const options = {
+        const options = {
           timeZone: this.currentTimeInLocation,
           hour: '2-digit',
           minute: '2-digit',
