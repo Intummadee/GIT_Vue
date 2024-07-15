@@ -15,7 +15,9 @@
             <div class="w-[70%] flex flex-col justify-between h-[200px] py-4">
               <div>
                 <h1 class="text-white text-2xl font-bold"> {{weather.name}} </h1>
-                <h1 class="text-secondary "> {{ currentTimeInLocationUpdate }} | {{ timezone }}</h1>
+                <div v-show="findWeatherBeforeCountTime">
+                  <h1 class="text-secondary "> {{ currentTimeInLocationUpdate }} | {{ timezone }}</h1>
+                </div>
                 
               </div>
               <h1 class="items-end text-white font-bold tracking-wide	 text-4xl"> {{ current_data_weather.main }} {{ weather.main.temp }} °C</h1>
@@ -100,13 +102,14 @@ export default {
       dataForSevenForecast : [],
       dataEachThreeHoursForecast : [],
       searchCity: "",
+      findWeatherBeforeCountTime: false
     }
   },
   created() {
     this.getLocation();
-    setTimeout(()=>{ // setTimeout: ทำงานครั้งเดียวหลังจากผ่านไป 5 วินาที
+    if(this.findWeatherBeforeCountTime == true){
       setInterval(this.updateTime, 1000); 
-    }, 5000)
+    } // setTimeout: ทำงานครั้งเดียวหลังจากผ่านไป 5 วินาที
   },
   methods: {
     getLocation() {
@@ -232,7 +235,7 @@ export default {
         
         
         
-        
+        this.findWeatherBeforeCountTime = true; // เปลี่ยนเปน true เพื่อให้นับเวลาตามวิ
       } catch (error) {
         // จัดการข้อผิดพลาด
         console.error("Error fetching weather data:", error.response ? error.response.data : error.message);
