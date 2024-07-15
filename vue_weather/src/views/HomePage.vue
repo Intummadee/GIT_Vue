@@ -134,6 +134,17 @@ export default {
         
         const idOfCity = response.data.id; // id ของ location 
         
+
+
+        const API_KEY = 'd8949fc313444a98a8e124834241507'; // ต้องสมัครและรับ API key จาก WeatherAPI.com
+        const CITY = 'Bangkok';
+        // d8949fc313444a98a8e124834241507
+        const url = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${CITY}&days=7`);
+        console.log("uri ",url);
+        
+
+
+       
         
         // ไว้ใช้แสดงอากาศ 7 วันโดยเฉลี่ย ==========================================
         // Ref => https://openweathermap.org/appid ของฟรี มันใช้ได้แค่ 3-hour Forecast 5 days 

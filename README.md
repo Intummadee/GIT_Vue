@@ -408,6 +408,7 @@ data(){
 
 - https://cdnjs.com/libraries/font-awesome
 - https://openweathermap.org/api/one-call-3#current (weather api)
+- https://www.weatherapi.com/my/ (weather api forecast 7 day)
 - https://home.openweathermap.org/
 - https://tailwindcss.com/
 
