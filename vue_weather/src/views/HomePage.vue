@@ -72,11 +72,13 @@
 
       <!-- right element -->
       <div class="flex flex-col w-[40%] ml-[4rem] ">
-        Weather in the next 6 days
-        <div v-show="dataForSevenDayForecast.length>0">
-          <div v-for="(weather) in dataForSevenDayForecast" :key="weather.date" class="bg-second mt-3 rounded-lg p-3">
-            <p>{{ weather.day }}</p>
-            <p>{{ weather.date }}</p>
+        Weather in the next 7 days
+        <div v-show="dataForSevenDayForecast.length > 0" >
+          <div v-for="(weather) in dataForSevenDayForecast" :key="weather.date" class="bg-second p-6 mt-3 rounded-lg grid grid-cols-3">
+            <div class="flex flex-col">
+              <p>{{ weather.day }}</p>
+              <p>{{ weather.date }}</p>
+            </div>
             <p>{{ weather.mostFrequentCondition }}</p>
           </div>
         </div>
@@ -244,15 +246,19 @@ export default {
 
 
         // // icon เปลี่ยนไปตาม สภาพภูมิอากาศ อันนี้เป็น icon ตามสภาพภูมิอากาศของ weatherapi.com
-        // const iconMap_weatherapi = {
-        //   Clouds: require("@/assets/icon/Clouds.png"),
-        //   Rain: require("@/assets/icon/Rain.png"),
-        //   Thunderstorm: require("@/assets/icon/Thunderstorm.png"),
-        //   Drizzle: require("@/assets/icon/Drizzle.png"),
-        //   Snow: require("@/assets/icon/Snow.png"),
-        //   Atmosphere: require("@/assets/icon/Atmosphere.png"),
-        //   Clear: require("@/assets/icon/Clear.png")
-        // };
+        const iconMap_weatherapi = {
+          Cloudy: require("@/assets/icon/Clouds.png"),
+          Light_rain: require("@/assets/icon/LightRain.png"),
+          Light_rain_shower: require("@/assets/icon/Drizzle.png"),
+          Light_drizzle: require("@/assets/icon/Clouds.png"),
+          Partly_Cloudy: require("@/assets/icon/Rain.png"),
+          Overcast: require("@/assets/icon/Atmosphere.png"),
+          Patchy_rain_nearby: require("@/assets/icon/Thunderstorm.png"),
+          Patchy_light_drizzle: require("@/assets/icon/Clear.png"),
+          Patchy_light_rain: require("@/assets/icon/Clear.png"),
+          // Patchy_light_drizzle: require("@/assets/icon/Clear.png"),
+        };
+        console.log(iconMap_weatherapi);
 
         // 📍 ต้องสมัครและรับ API key จาก WeatherAPI.com เพื่อ⁡⁢⁢⁣พยากรณ์อากาศในอีก 7 วัน⁡ ====
         // Ref => https://www.weatherapi.com/my/
@@ -277,9 +283,9 @@ export default {
             // เป็นเทคนิคชื่อ "default value" หรือ "fallback value"
           });
 
-          console.log("frequencyMap : ", frequencyMap);
+          // console.log("frequencyMap : ", frequencyMap); // => frequencyMap: {Light rain shower: 3, "Partly Cloudy ": 1}
  
-      
+    
           let mostFrequentCondition = '';
           let highestFrequency = 0;
           for (const condition in frequencyMap) {
