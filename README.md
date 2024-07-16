@@ -95,9 +95,9 @@ npm install dotenv
 
 
 <details>
-<summary><h2>Basic Vue</h2></summary>
+<summary><h2>Basic Vue 👽</h2></summary>
 
-- วิธีผูก attribute เข้ากับ data ใช้ v-bind โดยย่อด้วยการใส่แค่ colon(:)
+- The short way to bind attributes to data is to use v-bind by inserting just a colon(:).
 ```JS
 <img v-bind:src="picture" :width="width"/>
 <a :href="social">Social</a>
@@ -133,9 +133,7 @@ v-show: Just hide or show elements using CSS (display: none)
 </div>
 
 {/* Computed */}
-<h1>Computed : {{ getIncome }} </h1>
 <h1>Computed : {{ getDepartMent }} </h1> 
-
     data(){
         return{
             animals:["dog", "cat", "panda"],
@@ -166,11 +164,9 @@ v-show: Just hide or show elements using CSS (display: none)
             }
         }
     },
-    
-    
 ```
 
-- Pattern : get data() and methods In Template
+- Shows how to bind data and methods to the template.
 ```JS
 <template>
   <section>
