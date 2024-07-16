@@ -81,13 +81,15 @@ npm install dotenv
 
 <details>
 <summary><h2>Function</h2></summary>
-- แสดงสภาพอากาศปัจจุบัน: แสดงอุณหภูมิ, ความชื้น, ความเร็วลม, มีเมฆกี่% , ปริมารณนํ้าฝน ,และสภาพอากาศปัจจุบัน (เช่น แดด, ฝน, เมฆ)
-- ใช้ Geolocation API หาตำแหน่งปัจจุบัน เพื่อดึงสภาพอากาศปัจจุบันตามตำแหน่งที่ตั้งของผู้ใช้
-- สามารถค้นหาสภาพอากาศจากตำแหน่งที่ต้องการ
-- เลือกหน่วยอุณหภูมิ: ผู้ใช้สามารถเลือกหน่วยอุณหภูมิเป็นเซลเซียส (°C) หรือฟาเรนไฮต์ (°F)
-- แสดงข้อมูลสภาพอากาศตามเวลา: แสดงสภาพอากาศรายชั่วโมงสำหรับวันปัจจุบัน
-- แสดงข้อมูลสภาพอากาศทั้งสัปดาห์
-- คำนวณค่าดัชนี UV , แสดงกราฟอุณหภูมิ , แสดงคุณภาพอากาศ (PM)
+<ul>
+    <li>Display current weather conditions: Show temperature, humidity, wind speed, cloud percentage, rainfall amount, and current weather conditions (e.g., sunny, rainy, cloudy).</li>
+    <li>Use Geolocation API to find the current location in order to fetch the current weather conditions based on the user's location.</li>
+    <li>Allow users to search for weather conditions of a desired location.</li>
+    <li>Temperature unit selection: Users can choose the temperature unit to be either Celsius (°C) or Fahrenheit (°F).</li>
+    <li>Display weather information by time: Show 3 hourly weather conditions for the current day.</li>
+    <li>Display weekly weather information.</li>
+    <li>Calculate UV index, display temperature graph, and show air quality (PM).</li>
+</ul>
 </details>
 
 
@@ -168,7 +170,7 @@ v-show: Just hide or show elements using CSS (display: none)
     
 ```
 
-- Pattern
+- Pattern : get data() and methods In Template
 ```JS
 <template>
   <section>
@@ -199,14 +201,14 @@ export default {
 - Form & Ref 
 ```JS
 <form @submit="submitForm">
-    <label>ป้อนชื่อเล่น : </label>
+    <label>Enter nickname : </label>
     <input type="text" v-on:input="setNickName" ref="nicknameEl" />
-    <button type="submit">บันทึก</button>
+    <button type="submit">Submit</button>
 </form>
 methods:{
     submit(e){
         e.preventDefault(); // => Prevent reset of form fields , But it can be shortened by deleting this line and adding it directly to the form 
-        // <form @submit.prevent="submitForm">
+        // Or you can write it in the tag form instead : <form @submit.prevent="submitForm">
         alert("Hello")
         this.nickname = this.$refs.nicknameEl.value;
     },
