@@ -351,21 +351,21 @@ methods:{
 
 - Slot : Different content will be in slot but image in Card will be same
 <div align="center">
-    <img src="./img_Git/image1.png" height="70%" width="50%"/>
+    <img src="./img_Git/image1.png" height="100%" width="70%"/>
 </div>
 <div align="center">
-    <img src="./img_Git/image2.png" height="150" width="35%" />
-    <img src="./img_Git/image3.png" height="160" width="55%" />
+    <img src="./img_Git/image2.png" height="100%" width="35%" />
+    <img src="./img_Git/image3.png" height="100%" width="55%" />
 </div>
 1.) use card cover content That will change each data
 <div align="center">
-    <img src="./img_Git/image4.png" height="260" width="50%" />
+    <img src="./img_Git/image4.png" height="100%" width="50%" />
 </div>
 
 2.) slot name
 <div align="center">
-    <img src="./img_Git/image5.png" height="150" width="45%" />
-    <img src="./img_Git/image6.png" height="200" width="45%" />
+    <img src="./img_Git/image5.png" height="100%" width="45%" />
+    <img src="./img_Git/image6.png" height="100%" width="45%" />
 </div>
 
 - V-Model Form
