@@ -80,6 +80,7 @@
               <p>{{ weather.date }}</p>
             </div>
             <p>{{ weather.mostFrequentCondition }}</p>
+            <p>{{ weather.averageTemp }}</p>
           </div>
         </div>
       </div>
@@ -260,18 +261,27 @@ export default {
         };
         console.log(iconMap_weatherapi);
 
+
+
+
+
+
+
+
+
+
+
         // 📍 ต้องสมัครและรับ API key จาก WeatherAPI.com เพื่อ⁡⁢⁢⁣พยากรณ์อากาศในอีก 7 วัน⁡ ====
         // Ref => https://www.weatherapi.com/my/
         const response_ForeCastSevenDays = (await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${this.apiKeyWeatherAPI}&q=${lat},${lon}&days=7`)).data;
         console.log("response_ForeCastSevenDays ", response_ForeCastSevenDays);
         let list = [...response_ForeCastSevenDays.forecast.forecastday]
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        for (let i = 0;i < list.length; i++ ){
+        for (let i = 0;i < list.length; i++ ){ // เป็นการวนลูป Array(7) หรือ ข้อมูลของอากาศใน 7 วัน
           let dateString = list[i].date; // '2024-07-16'
-          let date = new Date(dateString);
-          list[i].day = daysOfWeek[date.getDay()];
-
-
+          let date = new Date(dateString); // Tue Jul 16 2024 07:00:00 GMT+0700 (Indochina Time) => "Indochina Time" (ICT) คือเขตเวลามาตรฐานที่ใช้ในบางประเทศในเอเชียตะวันออกเฉียงใต้ โดยเขตเวลานี้มีความเร็วกว่าเวลาโลก UTC (Coordinated Universal Time) อยู่ที่ +7 ชั่วโมง (UTC+7)
+          list[i].day = daysOfWeek[date.getDay()]; // หาวันของวันที่ , getDay() : returns the day of the week ; where 0 represents Sunday --> Ref https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay
+          // ex. getDay() ถ้าเป็นวันอังคารจะได้เลข 2 ออกมา จากนั้นก็ดึง index ที่ 2 ของ daysOfWeek ออกมา --> daysOfWeek[2] = "Tuesday" 
 
 
 
@@ -282,10 +292,7 @@ export default {
             frequencyMap[condition] = (frequencyMap[condition] || 0) + 1; // (frequencyMap[condition] || 0) => ถ้าค่าทางซ้าย (frequencyMap[condition]) เป็น false (เช่น undefined) จะใช้ค่าทางขวา (0)
             // เป็นเทคนิคชื่อ "default value" หรือ "fallback value"
           });
-
           // console.log("frequencyMap : ", frequencyMap); // => frequencyMap: {Light rain shower: 3, "Partly Cloudy ": 1}
- 
-    
           let mostFrequentCondition = '';
           let highestFrequency = 0;
           for (const condition in frequencyMap) {
@@ -295,6 +302,19 @@ export default {
             }
           }
           list[i].mostFrequentCondition = mostFrequentCondition; 
+          
+
+
+          // หาอุณหภูมิเฉลี่ยด้วย เอาจำนวน องศาเซลเซียสแต่ละชั่วโมง มาบวกกันทั้งหมด แล้วหารด้วย 24 (มาจาก 24 ชม.)
+          let sumTemp = 0;
+          list[i].hour.forEach(data => {
+            sumTemp += data.temp_c;
+          })
+          list[i].averageTemp = (sumTemp/24).toFixed(2); 
+
+
+
+
           this.dataForSevenDayForecast.push(list[i])
         }
         // ====================================================================
