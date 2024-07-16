@@ -57,22 +57,24 @@ module.exports = {
 npm install uuid
 npm install axios
 npm install dotenv
-
-
 ```
 
+<br />
 
+> [!IMPORTANT]
+> ## How to run FrontEnd
+> ```
+> cd .\vue_weather\
+> npm run serve
+> ```
 
-## How to run FrontEnd
-```
-cd .\vue_weather\
-npm run serve
-```
+<hr />
 
-## Tech Stack :
-- bootstrap , tailwind , Vue
+> [!NOTE]
+> ## Tech Stack :
+> - bootstrap , tailwind , Vue
 
-
+<br />
 
 - trick create component
 ```<>```
