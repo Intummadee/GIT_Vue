@@ -80,7 +80,7 @@ npm install dotenv
 ```<>```
 
 <details>
-<summary><h2>Function</h2></summary>
+<summary><h2>Function 🎯</h2></summary>
 <ul>
     <li>Display current weather conditions: Show temperature, humidity, wind speed, cloud percentage, rainfall amount, and current weather conditions (e.g., sunny, rainy, cloudy).</li>
     <li>Use Geolocation API to find the current location in order to fetch the current weather conditions based on the user's location.</li>
@@ -351,7 +351,7 @@ methods:{
 
 - Slot : Different content will be in slot but image in Card will be same
 <div align="center">
-    <img src="./img_Git/image1.png" height="300" width="50%"/>
+    <img src="./img_Git/image1.png" height="70%" width="50%"/>
 </div>
 <div align="center">
     <img src="./img_Git/image2.png" height="150" width="35%" />
@@ -407,15 +407,15 @@ data(){
 ## Ref
 
 - https://cdnjs.com/libraries/font-awesome
-- https://openweathermap.org/api/one-call-3#current (weather api)
+- https://home.openweathermap.org/
+- https://openweathermap.org/api/one-call-3#current (openweather api)
 - https://www.weatherapi.com/my/ (weather api forecast 7 day)
 - https://www.weatherapi.com/docs/ (weather api doc)
-- https://home.openweathermap.org/
 - https://tailwindcss.com/
-
 - https://openweathermap.org/api/uvi (uv api)
 
 
 
 - Geolocation API
 - OpenWeatherMap API
+- Weatherapi API
