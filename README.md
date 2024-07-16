@@ -72,7 +72,7 @@ npm install dotenv
 
 > [!NOTE]
 > ## Tech Stack :
-> - bootstrap , tailwind , Vue
+> - tailwind , Vue
 
 <br />
 
