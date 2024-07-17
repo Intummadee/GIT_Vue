@@ -21,6 +21,7 @@ module.exports = {
     },
     fontFamily:{
       Roboto: ["Roboto, sans-serif"],
+      FiraSans: ["Fira Sans, sans-serif"] // https://fonts.google.com/specimen/Fira+Sans
     },
     container:{
       padding: "2rem",
